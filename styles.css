@@ -381,6 +381,8 @@ p { margin: 0 0 1em; }
 .avatar-2 { background: linear-gradient(135deg, var(--black), #2a3247); }
 .avatar-3 { background: linear-gradient(135deg, var(--blue-600), var(--blue)); }
 .avatar-4 { background: linear-gradient(135deg, #1a1f2b, #4a5160); }
+.board-cta { margin: 32px 0 0; max-width: 720px; }
+.board-cta a { color: var(--blue); font-weight: 600; }
 
 .check-list { list-style: none; padding: 0; margin: 0; }
 .check-list li {
