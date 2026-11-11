@@ -13,4 +13,10 @@
 //   },
 //
 window.WTC_ROUTES = [
+  {
+    naam: "Tielt – Moerkerke",
+    bestand: "WTC Tielt - Moerkerke.gpx",
+    afstand: "88 km",
+    hoogtemeters: "250 hm"
+  },
 ];
