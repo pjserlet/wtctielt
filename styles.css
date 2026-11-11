@@ -467,6 +467,7 @@ p { margin: 0 0 1em; }
 }
 .level-a::before { background: var(--blue); }
 .level-b::before { background: var(--black); }
+.level-b1::before { background: linear-gradient(90deg, var(--black), var(--blue)); }
 .level-c::before { background: linear-gradient(90deg, var(--blue), var(--black)); }
 
 .level-tag {
