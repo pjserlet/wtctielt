@@ -487,6 +487,7 @@ p { margin: 0 0 1em; }
   margin: 8px 0 16px;
   letter-spacing: 0;
 }
+.level-distance { color: var(--ink-2); font-weight: 600; margin: 0; }
 
 .schedule-table {
   background: #fff;
