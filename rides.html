@@ -87,24 +87,9 @@
 
     <section class="section">
       <div class="container">
-        <div class="section-head"><p class="eyebrow">Routes</p><h2>Onze favoriete lussen</h2></div>
-        <div class="grid grid-3">
-          <article class="card">
-            <h3>De Vlaamse Ardennen</h3>
-            <p class="muted">120 km · 1.300 hm</p>
-            <p>Klassieker met Oude Kwaremont, Paterberg en Koppenberg. Voor wie tegen klimmen kan.</p>
-          </article>
-          <article class="card">
-            <h3>De Kustklassieker</h3>
-            <p class="muted">140 km · 200 hm</p>
-            <p>Vlakke rit naar Oostende met koffiestop in De Haan. Vaak met rugwind terug.</p>
-          </article>
-          <article class="card">
-            <h3>De Mandelroute</h3>
-            <p class="muted">75 km · 400 hm</p>
-            <p>Rustige lus langs de Mandel — ideaal voor de C-groep en familie-uitstappen.</p>
-          </article>
-        </div>
+        <div class="section-head"><p class="eyebrow">Routes</p><h2>Onze routes</h2><p>Download een route als GPX-bestand en zet ze op je fietscomputer.</p></div>
+        <div class="grid grid-3" id="routes-list"></div>
+        <p class="muted" id="routes-empty">Binnenkort vind je hier onze routes als GPX-bestand.</p>
       </div>
     </section>
 
@@ -131,6 +116,7 @@
     </div>
     <div class="container footer-bottom"><p>© <span id="year"></span> WTC Tielt — Alle rechten voorbehouden.</p></div>
   </footer>
+  <script src="routes/routes.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
