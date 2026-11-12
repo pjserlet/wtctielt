@@ -327,6 +327,9 @@ p { margin: 0 0 1em; }
 .event-body p { margin: 0; }
 .event-body p.muted { font-size: .85rem; margin-bottom: 4px; }
 .event-ics { margin-top: 12px; }
+.event-card { display: flex; flex-direction: column; align-items: flex-start; }
+.event-card .event-ics { margin-top: auto; }
+.event-card p:last-of-type { margin-bottom: 16px; }
 
 .badge {
   font-size: .72rem;

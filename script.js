@@ -239,6 +239,13 @@
       card.appendChild(el('h3', '', e.titel));
       if (e.info) card.appendChild(el('p', 'muted', e.info));
       if (e.omschrijving) card.appendChild(el('p', '', e.omschrijving));
+      var cardIcs = eventIcs(e);
+      if (cardIcs) {
+        var cardAdd = el('a', 'btn btn-outline btn-sm event-ics', 'Zet in agenda');
+        cardAdd.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(cardIcs.text);
+        cardAdd.setAttribute('download', cardIcs.name);
+        card.appendChild(cardAdd);
+      }
       eventsPreview.appendChild(card);
     });
   }
