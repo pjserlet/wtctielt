@@ -21,12 +21,13 @@
     });
   }
 
-  // Routes (pagina Ritten): lijst uit routes/routes.js met GPX-download
+  // Routes (pagina Ritten): per groep uit routes/routes.js, met GPX-download
   var routesList = document.getElementById('routes-list');
-  var routes = window.WTC_ROUTES || [];
-  if (routesList && routes.length) {
-    routes.forEach(function (r) {
-      if (!r || !r.naam || !r.bestand) return;
+  if (routesList) {
+    var routeGroups = ['A & B', 'B1', 'C'];
+    var routes = (window.WTC_ROUTES || []).filter(function (r) { return r && r.naam && r.bestand; });
+
+    var routeCard = function (r) {
       var card = document.createElement('article');
       card.className = 'card route-card';
 
@@ -54,11 +55,35 @@
       link.setAttribute('download', r.bestand);
       link.textContent = 'Download GPX';
       card.appendChild(link);
+      return card;
+    };
 
-      routesList.appendChild(card);
+    var routeGroup = function (heading, items) {
+      var wrap = document.createElement('div');
+      wrap.className = 'route-group';
+      var h = document.createElement('h3');
+      h.className = 'route-group-title';
+      h.textContent = heading;
+      wrap.appendChild(h);
+      if (items.length) {
+        var grid = document.createElement('div');
+        grid.className = 'grid grid-3';
+        items.forEach(function (r) { grid.appendChild(routeCard(r)); });
+        wrap.appendChild(grid);
+      } else {
+        var empty = document.createElement('p');
+        empty.className = 'muted';
+        empty.textContent = 'Nog geen route voor deze groep.';
+        wrap.appendChild(empty);
+      }
+      routesList.appendChild(wrap);
+    };
+
+    routeGroups.forEach(function (g) {
+      routeGroup('Groep ' + g, routes.filter(function (r) { return r.groep === g; }));
     });
-    var routesEmpty = document.getElementById('routes-empty');
-    if (routesEmpty && routesList.children.length) routesEmpty.hidden = true;
+    var others = routes.filter(function (r) { return routeGroups.indexOf(r.groep) === -1; });
+    if (others.length) routeGroup('Andere routes', others);
   }
 
   // Evenementen uit events.js: volledige lijst op Kalender, eerste drie op Home
