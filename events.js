@@ -26,7 +26,7 @@ window.WTC_EVENTS = [
     datum: "2027-01-17",
     plaats: "Clublokaal, Tielt",
     titel: "Nieuwjaarsreceptie 2027",
-    info: "Datum en uur nog te bepalen · Clublokaal",
+    info: "Zondag 17 januari · Uur nog te bepalen · Clublokaal",
     tag: "Feest",
     kleur: "blue"
   },
