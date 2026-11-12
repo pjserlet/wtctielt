@@ -67,7 +67,7 @@
       wrap.appendChild(h);
       if (items.length) {
         var grid = document.createElement('div');
-        grid.className = 'grid grid-3';
+        grid.className = 'route-group-list';
         items.forEach(function (r) { grid.appendChild(routeCard(r)); });
         wrap.appendChild(grid);
       } else {

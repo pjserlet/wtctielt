@@ -487,7 +487,7 @@ p { margin: 0 0 1em; }
   margin: 8px 0 16px;
   letter-spacing: 0;
 }
-.route-group + .route-group { margin-top: 40px; }
+.route-group-list { display: flex; flex-direction: column; gap: 16px; }
 .route-group-title { margin: 0 0 16px; }
 .route-card { display: flex; flex-direction: column; align-items: flex-start; }
 .route-card .btn { margin-top: auto; }
