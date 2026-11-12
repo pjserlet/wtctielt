@@ -13,18 +13,18 @@
 //
 window.WTC_EVENTS = [
   {
-    dag: "?",
-    maand: "2027",
+    dag: "17",
+    maand: "JAN",
     titel: "Nieuwjaarsreceptie 2027",
     info: "Datum en uur nog te bepalen · Clublokaal",
     tag: "Feest",
     kleur: "blue"
   },
   {
-    dag: "?",
-    maand: "2027",
+    dag: "06",
+    maand: "MAA",
     titel: "Openingsrit seizoen 2027",
-    info: "Datum nog te bepalen · Vertrek 9u00 · Clublokaal",
+    info: "Zondag 6 maart · Vertrek 9u00 · Clublokaal",
     omschrijving: "De klassieke openingsrit van 50 km.",
     tag: "Clubrit",
     kleur: "blue"
