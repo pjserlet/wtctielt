@@ -23,4 +23,18 @@ window.WTC_ROUTES = [
     afstand: "88 km",
     hoogtemeters: "250 hm"
   },
+  {
+    groep: "B1",
+    naam: "Tielt – Bellem",
+    bestand: "WTC Tielt - Bellem.gpx",
+    afstand: "77 km",
+    hoogtemeters: "244 hm"
+  },
+  {
+    groep: "C",
+    naam: "Tielt – Landegem",
+    bestand: "WTC Tielt - Bellem.gpx",
+    afstand: "60 km",
+    hoogtemeters: "180 hm"
+  }
 ];
