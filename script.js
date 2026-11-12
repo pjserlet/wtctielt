@@ -45,7 +45,7 @@
           if (points.length < 2) return;
 
           mapEl.hidden = false;
-          var map = L.map(mapEl, { scrollWheelZoom: false, zoomControl: false });
+          var map = L.map(mapEl, { scrollWheelZoom: false, zoomControl: false, zoomSnap: 0.25 });
           L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
