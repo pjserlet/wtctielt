@@ -27,9 +27,45 @@
     var routeGroups = ['A & B', 'B1', 'C'];
     var routes = (window.WTC_ROUTES || []).filter(function (r) { return r && r.naam && r.bestand; });
 
+    // Kleine kaart van het GPX-bestand (Leaflet + OpenStreetMap)
+    var routeMap = function (mapEl, url) {
+      if (!window.L || !window.fetch || !window.DOMParser) return;
+      fetch(url)
+        .then(function (res) { if (!res.ok) throw new Error(res.status); return res.text(); })
+        .then(function (text) {
+          var xml = new DOMParser().parseFromString(text, 'application/xml');
+          var nodes = xml.getElementsByTagName('trkpt');
+          if (!nodes.length) nodes = xml.getElementsByTagName('rtept');
+          var points = [];
+          for (var i = 0; i < nodes.length; i++) {
+            var lat = parseFloat(nodes[i].getAttribute('lat'));
+            var lon = parseFloat(nodes[i].getAttribute('lon'));
+            if (!isNaN(lat) && !isNaN(lon)) points.push([lat, lon]);
+          }
+          if (points.length < 2) return;
+
+          mapEl.hidden = false;
+          var map = L.map(mapEl, { scrollWheelZoom: false, zoomControl: false });
+          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          }).addTo(map);
+          var line = L.polyline(points, { color: '#0057ff', weight: 3 }).addTo(map);
+          L.circleMarker(points[0], { radius: 5, color: '#fff', weight: 2, fillColor: '#0057ff', fillOpacity: 1 }).addTo(map);
+          map.fitBounds(line.getBounds(), { paddingTopLeft: [12, 12], paddingBottomRight: [12, 26] });
+        })
+        .catch(function () { mapEl.hidden = true; });
+    };
+
     var routeCard = function (r) {
       var card = document.createElement('article');
       card.className = 'card route-card';
+
+      var mapEl = document.createElement('div');
+      mapEl.className = 'route-map';
+      mapEl.hidden = true;
+      card.appendChild(mapEl);
+      routeMap(mapEl, 'routes/' + encodeURIComponent(r.bestand));
 
       var title = document.createElement('h3');
       title.textContent = r.naam;

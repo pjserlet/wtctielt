@@ -489,6 +489,8 @@ p { margin: 0 0 1em; }
 }
 .route-group-list { display: flex; flex-direction: column; gap: 16px; }
 .route-group-title { margin: 0 0 16px; }
+.route-map { align-self: stretch; height: 180px; border-radius: var(--radius-sm); border: 1px solid var(--line); margin-bottom: 16px; z-index: 0; }
+.route-map[hidden] { display: none; }
 .route-card { display: flex; flex-direction: column; align-items: flex-start; }
 .route-card .btn { margin-top: auto; }
 .level-distance { color: var(--ink-2); font-weight: 600; margin: 0; }
