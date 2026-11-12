@@ -269,8 +269,7 @@ p { margin: 0 0 1em; }
   padding: 12px 16px;
   border-radius: 12px;
   letter-spacing: .04em;
-  min-width: 104px;
-  white-space: nowrap;
+  min-width: 64px;
   text-align: center;
 }
 .ride-meta h4 { margin: 0; }
