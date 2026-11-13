@@ -661,6 +661,7 @@ p { margin: 0 0 1em; }
 }
 .brand-footer .brand-name { color: #fff; }
 .brand-footer .brand-mark { color: var(--blue); }
+.brand-footer .brand-mark img { width: 40px; height: 40px; }
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
