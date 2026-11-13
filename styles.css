@@ -793,3 +793,9 @@ a.sponsor:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
   .primary-nav a { padding: 8px 8px; font-size: .88rem; white-space: nowrap; }
   .primary-nav .btn { margin-left: 6px; }
 }
+
+/* Clublogo in de hero */
+.hero-logo { display: block; width: 140px; height: 140px; margin: 0 0 24px max(24px, calc((100% - 820px) / 2 + 24px)); border-radius: 50%; box-shadow: 0 24px 60px rgba(0,0,0,.45); position: relative; z-index: 1; }
+@media (min-width: 1200px) {
+  .hero-logo { position: absolute; top: 50%; right: max(24px, calc((100% - 1130px) / 2)); margin: 0; transform: translateY(-50%); width: 300px; height: 300px; }
+}
