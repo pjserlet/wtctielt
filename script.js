@@ -250,6 +250,45 @@
     });
   }
 
+  // Nieuwsbrief: berichten + archief
+  var newsList = document.getElementById('news-list');
+  var newsArchive = document.getElementById('news-archive');
+  if (newsList || newsArchive) {
+    var nl = window.WTC_NEWSLETTER || {};
+    var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+    var newsDate = function (iso) {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+      return m ? parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
+    };
+    var byDateDesc = function (a, b) { return String(b.datum).localeCompare(String(a.datum)); };
+    if (newsList) {
+      var posts = (nl.berichten || []).filter(function (p) { return p && p.titel; }).sort(byDateDesc);
+      if (!posts.length) newsList.appendChild(el('p', 'muted', 'Nog geen berichten.'));
+      posts.forEach(function (p) {
+        var art = el('article', 'news-post');
+        if (p.datum) art.appendChild(el('p', 'news-date', newsDate(p.datum)));
+        art.appendChild(el('h3', '', p.titel));
+        String(p.tekst || '').split(/\n\s*\n/).forEach(function (para) {
+          if (para.trim()) art.appendChild(el('p', '', para.trim()));
+        });
+        newsList.appendChild(art);
+      });
+    }
+    if (newsArchive) {
+      var files = (nl.archief || []).filter(function (a) { return a && a.titel && a.bestand; }).sort(byDateDesc);
+      if (!files.length) newsArchive.appendChild(el('li', 'muted', 'Er staan nog geen nieuwsbrieven in het archief.'));
+      files.forEach(function (a) {
+        var li = document.createElement('li');
+        var link = el('a', '', a.titel);
+        link.href = 'nieuwsbrief/' + encodeURIComponent(a.bestand);
+        link.setAttribute('download', a.bestand);
+        li.appendChild(link);
+        if (a.datum) li.appendChild(el('span', 'muted', newsDate(a.datum) + ' · pdf'));
+        newsArchive.appendChild(li);
+      });
+    }
+  }
+
   // Footer year
   var yearEl = document.getElementById('year');
   if (yearEl) {
