@@ -324,6 +324,75 @@
     }
   }
 
+  // Weerbericht voor de eerstvolgende zondag (Open-Meteo, geen sleutel nodig)
+  var weatherEl = document.getElementById('weather');
+  if (weatherEl && window.fetch) {
+    var nextSunday = function () {
+      var d = new Date();
+      d.setDate(d.getDate() + ((7 - d.getDay()) % 7)); // vandaag als het zondag is
+      return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    };
+    var wmo = function (c) {
+      if (c === 0) return ['☀️', 'Zonnig'];
+      if (c === 1) return ['🌤️', 'Overwegend zonnig'];
+      if (c === 2) return ['⛅', 'Half bewolkt'];
+      if (c === 3) return ['☁️', 'Bewolkt'];
+      if (c === 45 || c === 48) return ['🌫️', 'Mistig'];
+      if (c >= 51 && c <= 57) return ['🌦️', 'Motregen'];
+      if (c >= 61 && c <= 67) return ['🌧️', 'Regen'];
+      if (c >= 71 && c <= 77) return ['🌨️', 'Sneeuw'];
+      if (c >= 80 && c <= 82) return ['🌦️', 'Buien'];
+      if (c === 85 || c === 86) return ['🌨️', 'Sneeuwbuien'];
+      if (c >= 95) return ['⛈️', 'Onweer'];
+      return ['🌡️', 'Wisselvallig'];
+    };
+    var compass = ['noorden', 'noordoosten', 'oosten', 'zuidoosten', 'zuiden', 'zuidwesten', 'westen', 'noordwesten'];
+    var target = nextSunday();
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=51.0&longitude=3.33' +
+      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant' +
+      '&wind_speed_unit=kmh&timezone=Europe%2FBrussels&forecast_days=10';
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      var dly = data && data.daily;
+      var i = dly ? dly.time.indexOf(target) : -1;
+      if (i < 0) return;
+      var w = wmo(dly.weather_code[i]);
+      var deg = dly.wind_direction_10m_dominant[i];
+      var from = compass[Math.round(deg / 45) % 8];
+      var speed = Math.round(dly.wind_speed_10m_max[i]);
+      var gust = Math.round(dly.wind_gusts_10m_max[i]);
+      var rain = dly.precipitation_probability_max[i];
+      var mm = dly.precipitation_sum[i];
+      var tmax = Math.round(dly.temperature_2m_max[i]);
+      var tmin = Math.round(dly.temperature_2m_min[i]);
+      var parts = target.split('-');
+      var dateLabel = parseInt(parts[2], 10) + ' ' + ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'][parseInt(parts[1], 10) - 1];
+
+      var tekst = w[1] + ', ' + tmin + '–' + tmax + ' °C. ';
+      tekst += (mm < 0.5 && rain < 30) ? 'Droog om te fietsen. ' : 'Kans op regen: ' + rain + '%' + (mm >= 0.5 ? ' (' + (Math.round(mm * 10) / 10) + ' mm)' : '') + '. ';
+      tekst += speed >= 30 ? 'Stevige wind, hou er rekening mee.' : (speed >= 20 ? 'Matige wind.' : 'Weinig wind.');
+
+      weatherEl.appendChild(el('p', 'weather-title', 'Weer op zondag ' + dateLabel));
+      var main = el('div', 'weather-main');
+      main.appendChild(el('span', 'weather-icon', w[0]));
+      var temp = el('div', 'weather-temp', tmax + '°');
+      temp.appendChild(el('small', '', 'min ' + tmin + '°'));
+      main.appendChild(temp);
+      var wind = el('div', 'weather-wind');
+      var arrow = el('span', 'wind-arrow', '↓');
+      arrow.style.transform = 'rotate(' + Math.round(deg) + 'deg)'; // pijl wijst waarheen de wind waait
+      arrow.setAttribute('aria-hidden', 'true');
+      wind.appendChild(arrow);
+      var wt = el('div', 'wind-text');
+      wt.appendChild(el('strong', '', speed + ' km/u'));
+      wt.appendChild(el('span', '', 'uit het ' + from));
+      wind.appendChild(wt);
+      main.appendChild(wind);
+      weatherEl.appendChild(main);
+      weatherEl.appendChild(el('p', 'weather-text', tekst + ' (Windstoten tot ' + gust + ' km/u.)'));
+      weatherEl.hidden = false;
+    }).catch(function () { /* geen weer: blok blijft verborgen */ });
+  }
+
   // Footer year
   var yearEl = document.getElementById('year');
   if (yearEl) {

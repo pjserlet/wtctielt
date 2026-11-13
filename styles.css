@@ -765,3 +765,17 @@ p { margin: 0 0 1em; }
 @media (max-width: 800px) { .news-layout { grid-template-columns: 1fr; gap: 32px; } }
 .news-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
 .news-latest { max-width: 760px; }
+
+/* Weerbericht */
+.weather-card { margin-top: 28px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; max-width: 420px; box-shadow: var(--shadow-sm); }
+.weather-card[hidden] { display: none; }
+.weather-title { font-weight: 700; margin: 0 0 12px; }
+.weather-main { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.weather-icon { font-size: 2.6rem; line-height: 1; }
+.weather-temp { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; line-height: 1; }
+.weather-temp small { display: block; font-family: Inter, sans-serif; font-size: .8rem; color: var(--ink-2); }
+.weather-wind { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.wind-arrow { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--blue-100); color: var(--blue); font-size: 1.3rem; font-weight: 700; }
+.wind-text { display: flex; flex-direction: column; font-size: .85rem; line-height: 1.25; color: var(--ink-2); }
+.wind-text strong { color: var(--ink); font-size: 1rem; }
+.weather-text { margin: 12px 0 0; font-size: .9rem; color: var(--ink-2); }
