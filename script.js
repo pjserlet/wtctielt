@@ -253,7 +253,8 @@
   // Nieuwsbrief: berichten + archief
   var newsList = document.getElementById('news-list');
   var newsArchive = document.getElementById('news-archive');
-  if (newsList || newsArchive) {
+  var newsLatest = document.getElementById('news-latest');
+  if (newsList || newsArchive || newsLatest) {
     var nl = window.WTC_NEWSLETTER || {};
     var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
     var newsDate = function (iso) {
@@ -261,6 +262,40 @@
       return m ? parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
     };
     var byDateDesc = function (a, b) { return String(b.datum).localeCompare(String(a.datum)); };
+    if (newsLatest) {
+      var latest = (nl.berichten || []).filter(function (p) { return p && p.titel; }).sort(byDateDesc)[0];
+      var latestPdf = (nl.archief || []).filter(function (a) { return a && a.titel && a.bestand; }).sort(byDateDesc)[0];
+      if (!latest && !latestPdf) {
+        newsLatest.appendChild(el('p', 'muted', 'Nog geen nieuws. Kom snel terug!'));
+      }
+      if (latest) {
+        var lc = el('article', 'news-post news-latest');
+        if (latest.datum) lc.appendChild(el('p', 'news-date', newsDate(latest.datum)));
+        lc.appendChild(el('h3', '', latest.titel));
+        var firstPara = String(latest.tekst || '').split(/\n\s*\n/)[0].trim();
+        if (firstPara) lc.appendChild(el('p', '', firstPara));
+        var actions = el('div', 'news-actions');
+        var more = el('a', 'btn btn-primary btn-sm', 'Lees meer');
+        more.href = 'newsletter.html';
+        actions.appendChild(more);
+        if (latestPdf) {
+          var pdf = el('a', 'btn btn-outline btn-sm', 'Download nieuwsbrief (pdf)');
+          pdf.href = 'nieuwsbrief/' + encodeURIComponent(latestPdf.bestand);
+          pdf.setAttribute('download', latestPdf.bestand);
+          actions.appendChild(pdf);
+        }
+        lc.appendChild(actions);
+        newsLatest.appendChild(lc);
+      } else if (latestPdf) {
+        var pc = el('article', 'news-post news-latest');
+        pc.appendChild(el('h3', '', latestPdf.titel));
+        var pa = el('a', 'btn btn-primary btn-sm', 'Download nieuwsbrief (pdf)');
+        pa.href = 'nieuwsbrief/' + encodeURIComponent(latestPdf.bestand);
+        pa.setAttribute('download', latestPdf.bestand);
+        pc.appendChild(pa);
+        newsLatest.appendChild(pc);
+      }
+    }
     if (newsList) {
       var posts = (nl.berichten || []).filter(function (p) { return p && p.titel; }).sort(byDateDesc);
       if (!posts.length) newsList.appendChild(el('p', 'muted', 'Nog geen berichten.'));

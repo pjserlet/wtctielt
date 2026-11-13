@@ -763,3 +763,5 @@ p { margin: 0 0 1em; }
 .news-archive a { font-weight: 600; }
 .news-archive span { font-size: .85rem; }
 @media (max-width: 800px) { .news-layout { grid-template-columns: 1fr; gap: 32px; } }
+.news-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.news-latest { max-width: 760px; }
