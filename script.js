@@ -393,6 +393,22 @@
     }).catch(function () { /* geen weer: blok blijft verborgen */ });
   }
 
+  // Sponsors (pagina Sponsors + homepage)
+  ['sponsors-list', 'sponsors-preview'].forEach(function (id) {
+    var box = document.getElementById(id);
+    if (!box) return;
+    (window.WTC_SPONSORS || []).filter(function (s) { return s && s.naam && s.logo; }).forEach(function (s) {
+      var item = s.link ? el('a', 'sponsor') : el('div', 'sponsor');
+      if (s.link) { item.href = s.link; item.target = '_blank'; item.rel = 'noopener'; }
+      var img = document.createElement('img');
+      img.src = 'sponsors/' + encodeURIComponent(s.logo);
+      img.alt = s.naam;
+      img.loading = 'lazy';
+      item.appendChild(img);
+      box.appendChild(item);
+    });
+  });
+
   // Footer year
   var yearEl = document.getElementById('year');
   if (yearEl) {
