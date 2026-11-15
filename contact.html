@@ -44,7 +44,9 @@
       <div class="container two-col">
         <div>
           <h2>Aanmeldformulier</h2>
-          <form class="form" action="mailto:arnechevrolet@hotmail.com" method="post" enctype="text/plain">
+          <form class="form" id="join-form" action="https://formspree.io/f/FORMSPREE_ID" method="POST">
+            <input type="hidden" name="_subject" value="Nieuwe lidaanvraag via de website" />
+            <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
             <div class="field">
               <label for="name">Naam</label>
               <input type="text" id="name" name="name" required />
@@ -71,7 +73,9 @@
               <label for="msg">Bericht</label>
               <textarea id="msg" name="msg" rows="4" placeholder="Vertel ons iets over jezelf..."></textarea>
             </div>
+            <p class="form-note">We gebruiken je gegevens enkel om je aanvraag en je lidmaatschap te behandelen.</p>
             <button type="submit" class="btn btn-primary">Verstuur aanvraag</button>
+            <p class="form-status" role="status" aria-live="polite" hidden></p>
           </form>
         </div>
 

@@ -410,6 +410,37 @@
   });
 
   // Footer year
+  // Aanmeldformulier via Formspree (zonder pagina te verlaten)
+  var joinForm = document.getElementById('join-form');
+  if (joinForm && window.fetch) {
+    joinForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = joinForm.querySelector('button[type="submit"]');
+      var status = joinForm.querySelector('.form-status');
+      var show = function (msg, ok) {
+        status.textContent = msg;
+        status.className = 'form-status ' + (ok ? 'is-ok' : 'is-error');
+        status.hidden = false;
+      };
+      btn.disabled = true;
+      btn.textContent = 'Bezig met versturen...';
+      fetch(joinForm.action, {
+        method: 'POST',
+        body: new FormData(joinForm),
+        headers: { Accept: 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        joinForm.reset();
+        show('Bedankt! We hebben je aanvraag goed ontvangen en nemen snel contact met je op.', true);
+      }).catch(function () {
+        show('Er ging iets mis bij het versturen. Probeer het later opnieuw of mail ons op arnechevrolet@hotmail.com.', false);
+      }).then(function () {
+        btn.disabled = false;
+        btn.textContent = 'Verstuur aanvraag';
+      });
+    });
+  }
+
   var yearEl = document.getElementById('year');
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
