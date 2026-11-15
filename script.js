@@ -94,7 +94,7 @@
       return card;
     };
 
-    var routeGroup = function (heading, items) {
+    var routeGroup = function (heading, items, target, emptyText) {
       var wrap = document.createElement('div');
       wrap.className = 'route-group';
       var h = document.createElement('h3');
@@ -109,17 +109,86 @@
       } else {
         var empty = document.createElement('p');
         empty.className = 'muted';
-        empty.textContent = 'Nog geen route voor deze groep.';
+        empty.textContent = emptyText || 'Nog geen route voor deze groep.';
         wrap.appendChild(empty);
       }
-      routesList.appendChild(wrap);
+      target.appendChild(wrap);
     };
 
-    routeGroups.forEach(function (g) {
-      routeGroup('Groep ' + g, routes.filter(function (r) { return r.groep === g; }));
-    });
-    var others = routes.filter(function (r) { return routeGroups.indexOf(r.groep) === -1; });
-    if (others.length) routeGroup('Andere routes', others);
+    var renderGroups = function (items, target, emptyText) {
+      routeGroups.forEach(function (g) {
+        routeGroup('Groep ' + g, items.filter(function (r) { return r.groep === g; }), target, emptyText);
+      });
+      var others = items.filter(function (r) { return routeGroups.indexOf(r.groep) === -1; });
+      if (others.length) routeGroup('Andere routes', others, target);
+    };
+
+    // Ritdagen (routes/routes.js: WTC_RITDAGEN): per zondag de routes van elke groep
+    var dagen = (window.WTC_RITDAGEN || []).slice().sort();
+    if (dagen.length) {
+      var maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+      var dagNamen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      var parse = function (iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); };
+      var vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
+      var start = dagen.filter(function (d) { return parse(d) >= vandaag; })[0] || dagen[dagen.length - 1];
+
+      var heading = document.getElementById('routes-heading');
+      var eerste = parse(dagen[0]), laatste = parse(dagen[dagen.length - 1]);
+      if (heading && eerste.getMonth() === laatste.getMonth() && eerste.getFullYear() === laatste.getFullYear()) {
+        heading.textContent = 'Routes ' + maanden[eerste.getMonth()] + ' ' + eerste.getFullYear();
+      }
+
+      var tabs = document.createElement('div');
+      tabs.className = 'ride-tabs';
+      tabs.setAttribute('role', 'tablist');
+      tabs.setAttribute('aria-label', 'Kies een ritdag');
+      routesList.parentNode.insertBefore(tabs, routesList);
+
+      var dateTitle = document.createElement('p');
+      dateTitle.className = 'ride-date-title';
+      routesList.parentNode.insertBefore(dateTitle, routesList);
+
+      var toon = function (iso) {
+        var d = parse(iso);
+        dateTitle.textContent = dagNamen[d.getDay()].charAt(0).toUpperCase() + dagNamen[d.getDay()].slice(1) + ' ' + d.getDate() + ' ' + maanden[d.getMonth()] + ' ' + d.getFullYear();
+        tabs.querySelectorAll('button').forEach(function (b) {
+          var actief = b.getAttribute('data-dag') === iso;
+          b.classList.toggle('is-active', actief);
+          b.setAttribute('aria-selected', actief ? 'true' : 'false');
+        });
+        routesList.innerHTML = '';
+        renderGroups(routes.filter(function (r) { return r.datum === iso; }), routesList, 'Route volgt nog.');
+      };
+
+      dagen.forEach(function (iso) {
+        var d = parse(iso);
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ride-tab';
+        b.setAttribute('role', 'tab');
+        b.setAttribute('data-dag', iso);
+        b.innerHTML = '<span class="ride-tab-day">' + dagNamen[d.getDay()].slice(0, 2) + '</span>' +
+          '<span class="ride-tab-date">' + d.getDate() + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '</span>';
+        b.addEventListener('click', function () { toon(iso); });
+        tabs.appendChild(b);
+      });
+      toon(start);
+
+      // Routes zonder datum blijven zichtbaar onder de ritdagen
+      var los = routes.filter(function (r) { return !r.datum || dagen.indexOf(r.datum) === -1; });
+      if (los.length) {
+        var losTitle = document.createElement('h3');
+        losTitle.className = 'ride-extra-title';
+        losTitle.textContent = 'Andere routes';
+        var losGrid = document.createElement('div');
+        losGrid.className = 'grid grid-3';
+        routesList.parentNode.appendChild(losTitle);
+        routesList.parentNode.appendChild(losGrid);
+        renderGroups(los, losGrid);
+      }
+    } else {
+      renderGroups(routes, routesList);
+    }
   }
 
   // Evenementen uit events.js: volledige lijst op Kalender, eerste drie op Home
