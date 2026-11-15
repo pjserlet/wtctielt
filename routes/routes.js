@@ -28,6 +28,7 @@ window.WTC_RITDAGEN = [
 
 window.WTC_ROUTES = [
   {
+    datum: "2027-03-07",
     groep: "A & B",
     naam: "Tielt – Moerkerke",
     bestand: "WTC Tielt - Moerkerke.gpx",
@@ -35,6 +36,7 @@ window.WTC_ROUTES = [
     hoogtemeters: "250 hm"
   },
   {
+    datum: "2027-03-07",
     groep: "B1",
     naam: "Tielt – Bellem",
     bestand: "WTC Tielt - Bellem.gpx",
@@ -42,6 +44,7 @@ window.WTC_ROUTES = [
     hoogtemeters: "244 hm"
   },
   {
+    datum: "2027-03-07",
     groep: "C",
     naam: "Tielt – Landegem",
     bestand: "WTC Tielt - Landegem.gpx",
