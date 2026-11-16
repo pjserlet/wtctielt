@@ -326,6 +326,59 @@
   if (newsList || newsArchive || newsLatest) {
     var nl = window.WTC_NEWSLETTER || {};
     var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+    // Tekst van een bericht: lege regel = nieuwe alinea, regels met "- " = opsomming
+    // (inspringen met twee spaties = subpunt), een regel vlak boven een opsomming = tussentitel.
+    // Mailadressen worden aanklikbaar.
+    var inlineText = function (node, text) {
+      text.split(/([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/).forEach(function (part, i) {
+        if (i % 2) {
+          var a = el('a', '', part);
+          a.href = 'mailto:' + part;
+          node.appendChild(a);
+        } else if (part) {
+          node.appendChild(document.createTextNode(part));
+        }
+      });
+      return node;
+    };
+    var renderBlock = function (block, target) {
+      var lines = block.split('\n').filter(function (l) { return l.trim(); });
+      var isItem = function (l) { return /^\s*[-*]\s+/.test(l); };
+      var i = 0;
+      while (i < lines.length) {
+        if (!isItem(lines[i])) {
+          var plain = [];
+          while (i < lines.length && !isItem(lines[i])) plain.push(lines[i++].trim());
+          var tag = i < lines.length && plain.length === 1 ? 'h4' : 'p';
+          target.appendChild(inlineText(el(tag, tag === 'h4' ? 'news-subtitle' : ''), plain.join(' ')));
+          continue;
+        }
+        var root = el('ul', 'news-bullets');
+        var stack = [{ ul: root, indent: lines[i].match(/^\s*/)[0].length, last: null }];
+        while (i < lines.length && isItem(lines[i])) {
+          var m = lines[i].match(/^(\s*)[-*]\s+(.*)$/), indent = m[1].length;
+          var top = stack[stack.length - 1];
+          if (indent > top.indent && top.last) {
+            var sub = el('ul', 'news-bullets');
+            top.last.appendChild(sub);
+            top = { ul: sub, indent: indent, last: null };
+            stack.push(top);
+          } else {
+            while (stack.length > 1 && indent < stack[stack.length - 1].indent) stack.pop();
+            top = stack[stack.length - 1];
+          }
+          top.last = inlineText(el('li'), m[2].trim());
+          top.ul.appendChild(top.last);
+          i++;
+        }
+        target.appendChild(root);
+      }
+    };
+    var renderText = function (text, target, firstOnly) {
+      var blocks = String(text || '').split(/\n\s*\n/).filter(function (b) { return b.trim(); });
+      (firstOnly ? blocks.slice(0, 1) : blocks).forEach(function (b) { renderBlock(b, target); });
+    };
+
     var newsDate = function (iso) {
       var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
       return m ? parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
@@ -341,8 +394,7 @@
         var lc = el('article', 'news-post news-latest');
         if (latest.datum) lc.appendChild(el('p', 'news-date', newsDate(latest.datum)));
         lc.appendChild(el('h3', '', latest.titel));
-        var firstPara = String(latest.tekst || '').split(/\n\s*\n/)[0].trim();
-        if (firstPara) lc.appendChild(el('p', '', firstPara));
+        renderText(latest.tekst, lc, true);
         var actions = el('div', 'news-actions');
         var more = el('a', 'btn btn-primary btn-sm', 'Lees meer');
         more.href = 'newsletter.html';
@@ -372,9 +424,7 @@
         var art = el('article', 'news-post');
         if (p.datum) art.appendChild(el('p', 'news-date', newsDate(p.datum)));
         art.appendChild(el('h3', '', p.titel));
-        String(p.tekst || '').split(/\n\s*\n/).forEach(function (para) {
-          if (para.trim()) art.appendChild(el('p', '', para.trim()));
-        });
+        renderText(p.tekst, art);
         newsList.appendChild(art);
       });
     }
