@@ -19,6 +19,9 @@
 //   duur          duur in uren (mag weggelaten worden; standaard 3)
 //   plaats        plaats in de agenda, bv. "Clublokaal, Tielt"
 //
+// BELANGRIJK: na een wijziging hier de agendabestanden opnieuw aanmaken met
+//   node tools/build-agenda.js
+//
 window.WTC_EVENTS = [
   {
     dag: "17",
