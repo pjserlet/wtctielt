@@ -35,7 +35,7 @@ window.WTC_ROUTES = [
     bestand: "WTC Tielt - Moerkerke.gpx",
     afstand: "88 km",
     hoogtemeters: "250 hm",
-    ritverantwoordelijke: "Jacob Verkest"
+    ritverantwoordelijke: "Jakob Verkest"
   },
   {
     datum: "2027-03-07",
