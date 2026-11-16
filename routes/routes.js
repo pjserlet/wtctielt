@@ -15,6 +15,7 @@
 //     bestand: "mandelroute.gpx",
 //     afstand: "75 km",
 //     hoogtemeters: "400 hm",
+//     ritverantwoordelijke: "Voornaam Naam",
 //     omschrijving: "Rustige lus langs de Mandel."
 //   },
 //
@@ -33,7 +34,8 @@ window.WTC_ROUTES = [
     naam: "Tielt – Moerkerke",
     bestand: "WTC Tielt - Moerkerke.gpx",
     afstand: "88 km",
-    hoogtemeters: "250 hm"
+    hoogtemeters: "250 hm",
+    ritverantwoordelijke: "Jacob Verkest"
   },
   {
     datum: "2027-03-07",
@@ -41,7 +43,8 @@ window.WTC_ROUTES = [
     naam: "Tielt – Bellem",
     bestand: "WTC Tielt - Bellem.gpx",
     afstand: "77 km",
-    hoogtemeters: "244 hm"
+    hoogtemeters: "244 hm",
+    ritverantwoordelijke: "Frederik Heinderson"
   },
   {
     datum: "2027-03-07",
@@ -49,6 +52,7 @@ window.WTC_ROUTES = [
     naam: "Tielt – Landegem",
     bestand: "WTC Tielt - Landegem.gpx",
     afstand: "60 km",
-    hoogtemeters: "180 hm"
+    hoogtemeters: "180 hm",
+    ritverantwoordelijke: "Nog te bepalen"
   }
 ];

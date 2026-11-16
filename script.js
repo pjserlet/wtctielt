@@ -79,6 +79,16 @@
         card.appendChild(metaEl);
       }
 
+      if (r.ritverantwoordelijke) {
+        var lead = document.createElement('p');
+        lead.className = 'route-lead';
+        lead.appendChild(document.createTextNode('Ritverantwoordelijke: '));
+        var who = document.createElement('strong');
+        who.textContent = r.ritverantwoordelijke;
+        lead.appendChild(who);
+        card.appendChild(lead);
+      }
+
       if (r.omschrijving) {
         var desc = document.createElement('p');
         desc.textContent = r.omschrijving;
