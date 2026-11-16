@@ -729,8 +729,13 @@ p { margin: 0 0 1em; }
   .schedule-row { grid-template-columns: 1fr 1fr; font-size: .9rem; }
   .schedule-row.schedule-head { display: none; }
   .schedule-row > div::before {
-    content: attr(role);
-    /* Keeping accessibility but using CSS-only labels */
+    content: attr(data-label);
+    display: block;
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--ink-2);
   }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 160px; }
   .g-wide { grid-column: span 2; }
