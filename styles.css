@@ -766,6 +766,20 @@ p { margin: 0 0 1em; }
 @media (max-width: 800px) { .news-layout { grid-template-columns: 1fr; gap: 32px; } }
 .news-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
 .news-latest { max-width: 760px; }
+.news-carousel { position: relative; }
+.news-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 2px 8px; outline: none; }
+.news-track::-webkit-scrollbar { display: none; }
+.news-track:focus-visible { box-shadow: 0 0 0 3px rgba(0, 87, 255, .25); border-radius: var(--radius); }
+.news-slide { flex: 0 0 min(760px, 88%); scroll-snap-align: start; display: flex; flex-direction: column; }
+.news-slide:only-child { flex-basis: min(760px, 100%); }
+.news-slide .news-actions { margin-top: auto; padding-top: 16px; }
+.news-nav { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.news-arrow { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; color: var(--ink); font: inherit; font-size: 1.1rem; cursor: pointer; transition: border-color .15s ease, opacity .15s ease; }
+.news-arrow:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+.news-arrow:disabled { opacity: .35; cursor: default; }
+.news-dots { display: flex; gap: 8px; }
+.news-dot { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 0; background: var(--line); cursor: pointer; transition: background .15s ease, width .15s ease; }
+.news-dot.is-active { background: var(--blue); width: 24px; border-radius: 5px; }
 
 /* Weerbericht */
 .weather-card { margin-top: 28px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; max-width: 420px; box-shadow: var(--shadow-sm); }

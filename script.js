@@ -393,6 +393,10 @@
       var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
       return m ? parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
     };
+    var postId = function (p) {
+      return 'bericht-' + String(p.datum || '') + '-' + String(p.titel || '').toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    };
     var byDateDesc = function (a, b) { return String(b.datum).localeCompare(String(a.datum)); };
     if (newsLatest) {
       var latest = (nl.berichten || []).filter(function (p) { return p && p.titel; }).sort(byDateDesc)[0];
@@ -401,23 +405,87 @@
         newsLatest.appendChild(el('p', 'muted', 'Nog geen nieuws. Kom snel terug!'));
       }
       if (latest) {
-        var lc = el('article', 'news-post news-latest');
-        if (latest.datum) lc.appendChild(el('p', 'news-date', newsDate(latest.datum)));
-        lc.appendChild(el('h3', '', latest.titel));
-        renderText(latest.tekst, lc, true);
-        var actions = el('div', 'news-actions');
-        var more = el('a', 'btn btn-primary btn-sm', 'Lees meer');
-        more.href = 'newsletter.html';
-        actions.appendChild(more);
-        attachments(latest, actions);
-        if (latestPdf) {
-          var pdf = el('a', 'btn btn-outline btn-sm', 'Download nieuwsbrief (pdf)');
-          pdf.href = 'nieuwsbrief/' + encodeURIComponent(latestPdf.bestand);
-          pdf.setAttribute('download', latestPdf.bestand);
-          actions.appendChild(pdf);
+        var allPosts = (nl.berichten || []).filter(function (p) { return p && p.titel; }).sort(byDateDesc);
+        var carousel = el('div', 'news-carousel');
+        var track = el('div', 'news-track');
+        track.setAttribute('tabindex', '0');
+        track.setAttribute('aria-label', 'Nieuwsberichten, swipe of gebruik de pijlen');
+        allPosts.forEach(function (p, idx) {
+          var lc = el('article', 'news-post news-slide');
+          lc.setAttribute('aria-label', (idx + 1) + ' van ' + allPosts.length);
+          if (p.datum) lc.appendChild(el('p', 'news-date', newsDate(p.datum)));
+          lc.appendChild(el('h3', '', p.titel));
+          renderText(p.tekst, lc, true);
+          var actions = el('div', 'news-actions');
+          var more = el('a', 'btn btn-primary btn-sm', 'Lees meer');
+          more.href = 'newsletter.html#' + postId(p);
+          actions.appendChild(more);
+          attachments(p, actions);
+          if (idx === 0 && latestPdf) {
+            var pdf = el('a', 'btn btn-outline btn-sm', 'Download nieuwsbrief (pdf)');
+            pdf.href = 'nieuwsbrief/' + encodeURIComponent(latestPdf.bestand);
+            pdf.setAttribute('download', latestPdf.bestand);
+            actions.appendChild(pdf);
+          }
+          lc.appendChild(actions);
+          track.appendChild(lc);
+        });
+        carousel.appendChild(track);
+
+        if (allPosts.length > 1) {
+          var nav = el('div', 'news-nav');
+          var prev = el('button', 'news-arrow', '←');
+          prev.type = 'button'; prev.setAttribute('aria-label', 'Vorig bericht');
+          var next = el('button', 'news-arrow', '→');
+          next.type = 'button'; next.setAttribute('aria-label', 'Volgend bericht');
+          var dots = el('div', 'news-dots');
+          var slides = track.children;
+          var current = function () {
+            var best = 0, dist = Infinity;
+            for (var k = 0; k < slides.length; k++) {
+              var d = Math.abs(slides[k].offsetLeft - track.offsetLeft - track.scrollLeft);
+              if (d < dist) { dist = d; best = k; }
+            }
+            return best;
+          };
+          var go = function (k) {
+            k = Math.max(0, Math.min(slides.length - 1, k));
+            track.scrollTo({ left: slides[k].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+          };
+          for (var k = 0; k < slides.length; k++) {
+            (function (k) {
+              var dot = el('button', 'news-dot');
+              dot.type = 'button';
+              dot.setAttribute('aria-label', 'Bericht ' + (k + 1));
+              dot.addEventListener('click', function () { go(k); });
+              dots.appendChild(dot);
+            })(k);
+          }
+          var update = function () {
+            var c = current();
+            prev.disabled = c === 0;
+            next.disabled = c === slides.length - 1;
+            for (var k = 0; k < dots.children.length; k++) {
+              dots.children[k].classList.toggle('is-active', k === c);
+              dots.children[k].setAttribute('aria-current', k === c ? 'true' : 'false');
+            }
+          };
+          prev.addEventListener('click', function () { go(current() - 1); });
+          next.addEventListener('click', function () { go(current() + 1); });
+          track.addEventListener('keydown', function (ev) {
+            if (ev.key === 'ArrowLeft') { ev.preventDefault(); go(current() - 1); }
+            if (ev.key === 'ArrowRight') { ev.preventDefault(); go(current() + 1); }
+          });
+          var t;
+          track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); });
+          window.addEventListener('resize', update);
+          nav.appendChild(prev);
+          nav.appendChild(dots);
+          nav.appendChild(next);
+          carousel.appendChild(nav);
+          update();
         }
-        lc.appendChild(actions);
-        newsLatest.appendChild(lc);
+        newsLatest.appendChild(carousel);
       } else if (latestPdf) {
         var pc = el('article', 'news-post news-latest');
         pc.appendChild(el('h3', '', latestPdf.titel));
@@ -433,6 +501,7 @@
       if (!posts.length) newsList.appendChild(el('p', 'muted', 'Nog geen berichten.'));
       posts.forEach(function (p) {
         var art = el('article', 'news-post');
+        art.id = postId(p);
         if (p.datum) art.appendChild(el('p', 'news-date', newsDate(p.datum)));
         art.appendChild(el('h3', '', p.titel));
         renderText(p.tekst, art);
