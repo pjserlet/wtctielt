@@ -379,6 +379,16 @@
       (firstOnly ? blocks.slice(0, 1) : blocks).forEach(function (b) { renderBlock(b, target); });
     };
 
+    // Bijlagen bij een bericht: knoppen naar bestanden in de map nieuwsbrief/
+    var attachments = function (p, target, cls) {
+      (p.bijlagen || []).filter(function (b) { return b && b.bestand; }).forEach(function (b) {
+        var a = el('a', cls || 'btn btn-outline btn-sm', b.titel || b.bestand);
+        a.href = 'nieuwsbrief/' + encodeURIComponent(b.bestand);
+        a.setAttribute('download', b.bestand);
+        target.appendChild(a);
+      });
+    };
+
     var newsDate = function (iso) {
       var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
       return m ? parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
@@ -399,6 +409,7 @@
         var more = el('a', 'btn btn-primary btn-sm', 'Lees meer');
         more.href = 'newsletter.html';
         actions.appendChild(more);
+        attachments(latest, actions);
         if (latestPdf) {
           var pdf = el('a', 'btn btn-outline btn-sm', 'Download nieuwsbrief (pdf)');
           pdf.href = 'nieuwsbrief/' + encodeURIComponent(latestPdf.bestand);
@@ -425,6 +436,11 @@
         if (p.datum) art.appendChild(el('p', 'news-date', newsDate(p.datum)));
         art.appendChild(el('h3', '', p.titel));
         renderText(p.tekst, art);
+        if ((p.bijlagen || []).length) {
+          var att = el('div', 'news-actions');
+          attachments(p, att, 'btn btn-primary btn-sm');
+          art.appendChild(att);
+        }
         newsList.appendChild(art);
       });
     }
