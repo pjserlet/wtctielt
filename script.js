@@ -432,8 +432,8 @@
         });
         carousel.appendChild(track);
 
-        if (allPosts.length > 1) {
-          var nav = el('div', 'news-nav');
+        if (allPosts.length > 1) (function () { // eigen scope: geen botsing met variabelen van het menu
+          var newsNav = el('div', 'news-nav');
           var prev = el('button', 'news-arrow', '←');
           prev.type = 'button'; prev.setAttribute('aria-label', 'Vorig bericht');
           var next = el('button', 'news-arrow', '→');
@@ -479,12 +479,12 @@
           var t;
           track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(update, 60); });
           window.addEventListener('resize', update);
-          nav.appendChild(prev);
-          nav.appendChild(dots);
-          nav.appendChild(next);
-          carousel.appendChild(nav);
+          newsNav.appendChild(prev);
+          newsNav.appendChild(dots);
+          newsNav.appendChild(next);
+          carousel.appendChild(newsNav);
           update();
-        }
+        })();
         newsLatest.appendChild(carousel);
       } else if (latestPdf) {
         var pc = el('article', 'news-post news-latest');
@@ -643,6 +643,24 @@
         btn.textContent = 'Verstuur aanvraag';
       });
     });
+  }
+
+  // Licht / donker thema (keuze wordt onthouden in deze browser)
+  var themeBtn = document.querySelector('.theme-toggle');
+  if (themeBtn) {
+    var root = document.documentElement;
+    var syncThemeBtn = function () {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      themeBtn.setAttribute('aria-label', dark ? 'Licht thema aanzetten' : 'Donker thema aanzetten');
+      themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    };
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('wtc-theme', next); } catch (e) {}
+      syncThemeBtn();
+    });
+    syncThemeBtn();
   }
 
   var yearEl = document.getElementById('year');
