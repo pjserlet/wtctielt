@@ -82,10 +82,8 @@
       if (r.ritverantwoordelijke) {
         var lead = document.createElement('p');
         lead.className = 'route-lead';
-        lead.appendChild(document.createTextNode('Ritverantwoordelijke: '));
-        var who = document.createElement('strong');
-        who.textContent = r.ritverantwoordelijke;
-        lead.appendChild(who);
+        lead.textContent = r.ritverantwoordelijke;
+        lead.title = 'Ritverantwoordelijke';
         card.appendChild(lead);
       }
 
