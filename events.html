@@ -5,17 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Kalender van WTC Tielt — evenementen, koersen en clubuitstappen." />
   <title>Kalender — WTC Tielt</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link rel="preload" href="fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/bebas-neue-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta name="theme-color" content="#0a0d14" />
+  <link rel="canonical" href="https://pjserlet.github.io/wtctielt/events.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="WTC Tielt Sportief" />
+  <meta property="og:locale" content="nl_BE" />
+  <meta property="og:title" content="Kalender — WTC Tielt" />
+  <meta property="og:description" content="Kalender van WTC Tielt — evenementen, koersen en clubuitstappen." />
+  <meta property="og:url" content="https://pjserlet.github.io/wtctielt/events.html" />
+  <meta property="og:image" content="https://pjserlet.github.io/wtctielt/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
   <script>(function(){try{var t=localStorage.getItem('wtc-theme');}catch(e){}if(!t){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261116a" />
+  <link rel="stylesheet" href="styles.css?v=20261116b" />
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="index.html">
-        <span class="brand-mark"><img src="club-logo.png" alt="" width="46" height="46" /></span>
+        <span class="brand-mark"><img src="club-logo-sm.webp" alt="" width="46" height="46" /></span>
         <span class="brand-text"><span class="brand-name">WTC Tielt</span><span class="brand-tag">Sportief</span></span>
       </a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
@@ -47,6 +61,7 @@
 
     <section class="section">
       <div class="container">
+        <h2 class="sr-only">Alle evenementen</h2>
         <div class="event-list" id="events-list"></div>
       </div>
     </section>
@@ -56,18 +71,18 @@
     <div class="container footer-grid">
       <div>
         <div class="brand brand-footer">
-          <span class="brand-mark"><img src="club-logo.png" alt="" width="46" height="46" /></span>
+          <span class="brand-mark"><img src="club-logo-sm.webp" alt="" width="46" height="46" /></span>
           <span class="brand-text"><span class="brand-name">WTC Tielt</span></span>
         </div>
         <p class="muted">Wielertoeristenclub Tielt vzw. Op de fiets sinds 1973.</p>
       </div>
-      <div><h4>Menu</h4><ul class="footer-links"><li><a href="about.html">Over ons</a></li><li><a href="rides.html">Ritten</a></li><li><a href="newsletter.html">Nieuwsbrief</a></li><li><a href="events.html">Kalender</a></li><li><a href="sponsors.html">Sponsors</a></li><li><a href="gallery.html">Foto's</a></li></ul></div>
-      <div><h4>Contact</h4><p class="muted">Clublokaal<br/>Markt 1, 8700 Tielt<br/>arnechevrolet@hotmail.com</p></div>
-      <div><h4>Volg ons</h4><ul class="footer-links"><li><a href="https://facebook.com/wtc.tielt" target="_blank" rel="noopener">Facebook</a></li><li><a href="#">Instagram</a></li><li><a href="https://www.strava.com/clubs/tieltsportief" target="_blank" rel="noopener">Strava</a></li></ul></div>
+      <div><h2 class="footer-title">Menu</h2><ul class="footer-links"><li><a href="about.html">Over ons</a></li><li><a href="rides.html">Ritten</a></li><li><a href="newsletter.html">Nieuwsbrief</a></li><li><a href="events.html">Kalender</a></li><li><a href="sponsors.html">Sponsors</a></li><li><a href="gallery.html">Foto's</a></li></ul></div>
+      <div><h2 class="footer-title">Contact</h2><p class="muted">Clublokaal<br/>Markt 1, 8700 Tielt<br/>arnechevrolet@hotmail.com</p></div>
+      <div><h2 class="footer-title">Volg ons</h2><ul class="footer-links"><li><a href="https://facebook.com/wtc.tielt" target="_blank" rel="noopener">Facebook</a></li><li><a href="#">Instagram</a></li><li><a href="https://www.strava.com/clubs/tieltsportief" target="_blank" rel="noopener">Strava</a></li></ul></div>
     </div>
     <div class="container footer-bottom"><p>© <span id="year"></span> WTC Tielt — Alle rechten voorbehouden.</p></div>
   </footer>
-  <script src="events.js?v=20261116a"></script>
-  <script src="script.js?v=20261116a"></script>
+  <script src="events.js?v=20261116b"></script>
+  <script src="script.js?v=20261116b"></script>
 </body>
 </html>

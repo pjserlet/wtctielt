@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pjserlet.github.io/wtctielt/sitemap.xml
