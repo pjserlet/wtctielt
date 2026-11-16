@@ -914,3 +914,11 @@ p a:not(.btn), li a:not(.btn), .small a { text-decoration: underline; text-under
 .calendar-subscribe { display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; flex-wrap: wrap; margin-top: 32px; padding: 24px 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-alt); }
 .calendar-subscribe h3 { margin: 0 0 6px; font-size: 1.05rem; }
 .calendar-subscribe p { margin: 0; max-width: 60ch; color: var(--ink-2); }
+
+/* Lopende tekst (privacyverklaring) */
+.prose { max-width: 760px; }
+.prose h2 { font-size: 1.5rem; margin: 36px 0 10px; }
+.prose p, .prose li { color: var(--ink); line-height: 1.7; }
+.prose ul { padding-left: 22px; margin: 0 0 16px; }
+.prose li { margin-bottom: 6px; }
+.footer-bottom a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
